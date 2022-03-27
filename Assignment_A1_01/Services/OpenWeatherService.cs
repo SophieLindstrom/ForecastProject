@@ -17,32 +17,34 @@ namespace Assignment_A1_01.Services
         readonly string apiKey = "9516011d36968c6458853eec14a51b3f"; // Your API Key
         public async Task<Forecast> GetForecastAsync(double latitude, double longitude)
         {
-                //https://openweathermap.org/current
-                var language = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-                var uri = $"https://api.openweathermap.org/data/2.5/forecast?" +
-                $"lat={latitude}" +
-                $"&lon={longitude}" +
-                $"&units=metric" +
-                $"&lang={language}" +
-                $"&appid={apiKey}";
+            //https://openweathermap.org/current
+            var language = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+            var uri = $"https://api.openweathermap.org/data/2.5/forecast?" +
+            $"lat={latitude}" +
+            $"&lon={longitude}" +
+            $"&units=metric" +
+            $"&lang={language}" +
+            $"&appid={apiKey}";
 
-                //Read the response from the WebApi
-                HttpResponseMessage response = await httpClient.GetAsync(uri);
-                response.EnsureSuccessStatusCode();
-                WeatherApiData wd = await response.Content.ReadFromJsonAsync<WeatherApiData>();
+            //Read the response from the WebApi
+            HttpResponseMessage response = await httpClient.GetAsync(uri);
+            response.EnsureSuccessStatusCode();
+            WeatherApiData wd = await response.Content.ReadFromJsonAsync<WeatherApiData>();
 
-                //Your Code to convert WeatherApiData to Forecast using Linq.
+            //Your Code to convert WeatherApiData to Forecast using Linq.
 
-                Forecast forecast = new Forecast();
+            Forecast forecast = new Forecast();
+
+            forecast.City = wd.city.name;
 
 
-                forecast.Items = new List<ForecastItem>();
+            forecast.Items = new List<ForecastItem>();
 
-                wd.list.ForEach(wdListItem => { forecast.Items.Add(GetForecastItem(wdListItem)); });
+            wd.list.ForEach(wdListItem => { forecast.Items.Add(GetForecastItem(wdListItem)); });
 
                
 
-                return forecast;
+            return forecast;
        
         }
 
