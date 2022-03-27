@@ -19,9 +19,33 @@ namespace Assignment_A1_01
             double latitude = 59.5086798659495;
             double longitude = 18.2654625932976;
 
-            var t1 = new OpenWeatherService().GetForecastAsync(latitude, longitude);
-            
-            //Your Code
+            OpenWeatherService service = new OpenWeatherService();
+
+            Task<Forecast> t1 = service.GetForecastAsync(latitude, longitude);
+
+            Task.WaitAll(t1);
+
+            Console.WriteLine("-----------------");
+            if (t1?.Status == TaskStatus.RanToCompletion)
+            {
+                Forecast forecast = t1.Result;
+                Console.WriteLine($"Weather forecast for {forecast.City}");
+                var GroupedList = forecast.Items.GroupBy(item => item.DateTime.Date);
+
+                foreach (IGrouping<DateTime, ForecastItem> group in GroupedList)
+                {
+                    Console.WriteLine(group.Key.Date.ToShortDateString());
+                    foreach (ForecastItem item in group)
+                    {
+                        Console.WriteLine($"   - {item.DateTime.ToShortTimeString()}: {item.Description}, temperature: {item.Temperature} degC, wind: {item.WindSpeed} m/s");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Geolocation weather service error.");
+            }
+
         }
     }
 }
