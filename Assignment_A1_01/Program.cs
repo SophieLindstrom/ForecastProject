@@ -16,7 +16,7 @@ namespace Assignment_A1_01
     {
         static void Main(string[] args)
         {
-            double latitude = 58.5086798659495;
+            double latitude = 59.5086798659495;
             double longitude = 19.2654625932976;
 
             OpenWeatherService service = new OpenWeatherService();

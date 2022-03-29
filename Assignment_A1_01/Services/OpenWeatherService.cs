@@ -42,8 +42,6 @@ namespace Assignment_A1_01.Services
 
             wd.list.ForEach(wdListItem => { forecast.Items.Add(GetForecastItem(wdListItem)); });
 
-               
-
             return forecast;
        
         }
